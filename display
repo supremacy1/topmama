@@ -1,0 +1,41 @@
+
+<?php
+// Include the database connection file
+include 'db_connection.php';
+
+// Fetch products and associated images
+$sql = "SELECT p.id, p.name, p.description, p.normal_price, p.discounted_price, pp.photo_url, pp.photo_data 
+        FROM products p
+        LEFT JOIN product_photos pp ON p.id = pp.product_id
+        ORDER BY p.id, pp.id";
+
+$result = $conn->query($sql);
+
+// Initialize variables to group images by product
+$products = [];
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $product_id = $row['id'];
+        
+        // Add the product details if not already in the array
+        if (!isset($products[$product_id])) {
+            $products[$product_id] = [
+                'name' => $row['name'],
+                'description' => $row['description'],
+                'normal_price' => $row['normal_price'],
+                'discounted_price' => $row['discounted_price'],
+                'images' => []
+            ];
+        }
+
+        // Add image URL or blob data to images array
+        if (!empty($row['photo_url'])) {
+            $products[$product_id]['images'][] = $row['photo_url'];
+        } elseif (!empty($row['photo_data'])) {
+            $base64_image = 'data:image/jpeg;base64,' . base64_encode($row['photo_data']);
+            $products[$product_id]['images'][] = $base64_image;
+        }
+    }
+}
+?>

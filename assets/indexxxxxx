@@ -1,0 +1,611 @@
+<?php
+// Include the database connection file
+include 'db_connection.php';
+
+// Fetch products and associated images
+$productQuery = "SELECT p.id, p.name, p.description, p.normal_price, p.discounted_price, pp.photo_url, pp.photo_data 
+                 FROM products p
+                 LEFT JOIN product_photos pp ON p.id = pp.product_id
+                 ORDER BY p.id, pp.id";
+$productResult = $conn->query($productQuery);
+
+// Fetch store locations and fees
+$storeQuery = "SELECT id, location_name, delivery_fee FROM store_locations";
+$storeResult = $conn->query($storeQuery);
+
+// Store locations in an array
+$stores = [];
+if ($storeResult->num_rows > 0) {
+    while ($storeRow = $storeResult->fetch_assoc()) {
+        $stores[] = $storeRow;
+    }
+}
+
+// Initialize variables to group images by product
+$products = [];
+
+if ($productResult->num_rows > 0) {
+    while ($row = $productResult->fetch_assoc()) {
+        $product_id = $row['id'];
+        
+        // Add the product details if not already in the array
+        if (!isset($products[$product_id])) {
+            $products[$product_id] = [
+                'name' => $row['name'],
+                'description' => $row['description'],
+                'normal_price' => $row['normal_price'],
+                'discounted_price' => $row['discounted_price'],
+                'images' => []
+            ];
+        }
+
+        // Add image URL or blob data to images array
+        if (!empty($row['photo_url'])) {
+            $products[$product_id]['images'][] = $row['photo_url'];
+        } elseif (!empty($row['photo_data'])) {
+            $base64_image = 'data:image/jpeg;base64,' . base64_encode($row['photo_data']);
+            $products[$product_id]['images'][] = $base64_image;
+        }
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container mt-4">
+    <div class="product-gallery">
+        <?php foreach ($products as $product_id => $product) : ?>
+            <div class="product-card">
+                <div class="image-container">
+                    <!-- Display the first image as the main large image -->
+                    <img class="main-image" src="<?= htmlspecialchars($product['images'][0]) ?>" alt="Main Product Image" onclick="openPreviewModal(this)">
+
+                    <!-- Display smaller images below -->
+                    <div class="thumbnail-container mt-2 d-flex justify-content-center">
+                        <?php foreach ($product['images'] as $image): ?>
+                            <img class="thumbnail mr-1" src="<?= htmlspecialchars($image) ?>" alt="Thumbnail Image" style="width: 50px;">
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Product Details -->
+                <div class="product-details">
+                    <h2><?= htmlspecialchars($product['name']) ?></h2>
+                    <p><?= htmlspecialchars($product['description']) ?></p>
+                    <p>Price: $<?= htmlspecialchars($product['normal_price']) ?></p>
+                    <button class="btn btn-primary order-button" onclick="openOrderForm(<?= $product_id ?>, '<?= htmlspecialchars($product['name']) ?>', <?= htmlspecialchars($product['normal_price']) ?>)">Order Now</button>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<!-- Modal for Order Form -->
+<div id="orderModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="orderForm" method="POST" action="process_order.php" class="p-3" onsubmit="return handleFormSubmit(event);">
+                <input type="hidden" name="product_id" id="product_id">
+                <input type="hidden" name="price" id="price">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" name="name" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" class="form-control" name="phone" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" class="form-control" name="address" id="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" class="form-control" name="quantity" id="quantity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Store Location:</label>
+                    <select name="location_id" id="location" class="form-control" onchange="updateDeliveryFee()">
+                        <?php foreach ($stores as $store): ?>
+                            <option value="<?= $store['id'] ?>" data-fee="<?= $store['delivery_fee'] ?>">
+                                <?= htmlspecialchars($store['location_name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <p>Delivery Fee: $<span id="delivery-fee">0.00</span></p>
+                </div>
+                <button type="submit" class="btn btn-success btn-block">Submit Order</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for image preview, ordering modal, delivery fee update, and Bootstrap dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    function openOrderForm(productId, productName, price) {
+        document.getElementById("product_id").value = productId;
+        document.getElementById("price").value = price;
+        $('#orderModal').modal('show');
+    }
+
+    function closeOrderModal() {
+        $('#orderModal').modal('hide');
+    }
+
+    function updateDeliveryFee() {
+        const locationSelect = document.getElementById("location");
+        const selectedOption = locationSelect.options[locationSelect.selectedIndex];
+        const fee = selectedOption.getAttribute("data-fee");
+        document.getElementById("delivery-fee").textContent = parseFloat(fee).toFixed(2);
+    }
+
+    function handleFormSubmit(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Display the success message
+        alert("Order submitted successfully!");
+
+        closeOrderModal(); // Close the modal after submission
+        document.getElementById("orderForm").reset(); // Reset the form fields
+        updateDeliveryFee(); // Reset delivery fee display
+    }
+
+    // Initialize the delivery fee on page load
+    document.addEventListener("DOMContentLoaded", updateDeliveryFee);
+</script>
+
+</body>
+</html>
+////openOrderForm
+<?php
+// Include the database connection file
+include 'db_connection.php';
+
+// Process form submission
+$message = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get JSON input from the request
+    $data = json_decode(file_get_contents("php://input"), true);
+    
+    // Insert customer details into the customers table
+    $stmt = $conn->prepare("INSERT INTO customers (name, email, phone, address) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $data['name'], $data['email'], $data['phone'], $data['address']);
+    $stmt->execute();
+    $customerId = $stmt->insert_id; // Get the inserted customer ID
+
+    // Insert order item into the order_item table
+    $stmt = $conn->prepare("INSERT INTO order_items (product_id, quantity, price) VALUES (?, ?, ?)");
+    $stmt->bind_param("iid", $data['product_id'], $data['quantity'], $data['price']);
+    $stmt->execute();
+    $orderId = $stmt->insert_id; // Assuming order_id is auto-increment
+
+    // Generate order details
+    $transactionId = uniqid(); // Generate a unique transaction ID
+    $locationId = 1; // Assuming a default location ID
+    $totalAmount = $data['price'] * $data['quantity']; // Calculate total amount
+    $status = 'Pending'; // Set initial status
+    $orderDate = date('Y-m-d H:i:s'); // Current date and time
+
+    // Insert order details into the orders table
+    $stmt = $conn->prepare("INSERT INTO orders (transaction_id, customer_id, location_id, total_amount, status, order_date) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("siidss", $transactionId, $customerId, $locationId, $totalAmount, $status, $orderDate);
+    $stmt->execute();
+
+    $message = 'Order placed successfully!';
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Order Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Order Your Pizza</h1>
+        <?php if ($message): ?>
+            <div class="alert alert-success"><?php echo $message; ?></div>
+        <?php endif; ?>
+        <form id="orderForm" method="POST" action="">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" class="form-control" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" class="form-control" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="product_id">Product ID:</label>
+                <input type="number" class="form-control" id="product_id" name="product_id" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Order</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                address: formData.get('address'),
+                product_id: formData.get('product_id'),
+                quantity: formData.get('quantity'),
+                price: formData.get('price'),
+            };
+
+            try {
+                const response = await fetch('', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                // Handle the response from the server (e.g., show success message)
+                console.log(result);
+                alert(result.message); // Display success message
+                this.reset(); // Reset the form after successful submission
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while placing your order. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
+//complet 
+<?php
+// Include the database connection file
+include 'db_connection.php';
+
+// Fetch products and associated images
+$productQuery = "SELECT p.id, p.name, p.description, p.normal_price, p.discounted_price, pp.photo_url, pp.photo_data 
+                 FROM products p
+                 LEFT JOIN product_photos pp ON p.id = pp.product_id
+                 ORDER BY p.id, pp.id";
+$productResult = $conn->query($productQuery);
+
+// Fetch store locations and fees
+$storeQuery = "SELECT id, location_name, delivery_fee FROM store_locations";
+$storeResult = $conn->query($storeQuery);
+
+// Store locations in an array
+$stores = [];
+if ($storeResult->num_rows > 0) {
+    while ($storeRow = $storeResult->fetch_assoc()) {
+        $stores[] = $storeRow;
+    }
+}
+
+// Initialize variables to group images by product
+$products = [];
+
+if ($productResult->num_rows > 0) {
+    while ($row = $productResult->fetch_assoc()) {
+        $product_id = $row['id'];
+        
+        // Add the product details if not already in the array
+        if (!isset($products[$product_id])) {
+            $products[$product_id] = [
+                'name' => $row['name'],
+                'description' => $row['description'],
+                'normal_price' => $row['normal_price'],
+                'discounted_price' => $row['discounted_price'],
+                'images' => []
+            ];
+        }
+
+        // Add image URL or blob data to images array
+        if (!empty($row['photo_url'])) {
+            $products[$product_id]['images'][] = $row['photo_url'];
+        } elseif (!empty($row['photo_data'])) {
+            $base64_image = 'data:image/jpeg;base64,' . base64_encode($row['photo_data']);
+            $products[$product_id]['images'][] = $base64_image;
+        }
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container {
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .main-image:hover {
+            transform: scale(1.05);
+        }
+
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 8px;
+        }
+
+        .thumbnail {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .thumbnail:hover {
+            opacity: 0.7;
+        }
+
+        .product-details h2 {
+            font-size: 1.25rem;
+            margin-top: 15px;
+        }
+        .product-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            flex: 1 1 calc(33.33% - 20px); /* Three items per row */
+            max-width: calc(33.33% - 20px);
+            box-sizing: border-box;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .product-card {
+                flex: 1 1 calc(50% - 20px); /* Two items per row on medium screens */
+                max-width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .product-card {
+                flex: 1 1 100%; /* Full width on small screens */
+                max-width: 100%;
+            }
+        }
+
+        .image-container {
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            max-height: 200px; /* Reduce main image height */
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .main-image:hover {
+            transform: scale(1.05);
+        }
+
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 8px;
+        }
+
+        .thumbnail {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .thumbnail:hover {
+            opacity: 0.7;
+        }
+
+        .product-details h2 {
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <div class="product-gallery">
+        <?php foreach ($products as $product_id => $product) : ?>
+            <div class="product-card">
+                <div class="image-container">
+                    <!-- Display the main image, which will open the preview on click -->
+                    <img class="main-image" src="<?= htmlspecialchars($product['images'][0]) ?>" alt="Main Product Image" onclick="openPreviewModal(this)">
+
+                    <!-- Display smaller images below as thumbnails -->
+                    <div class="thumbnail-container">
+                        <?php foreach ($product['images'] as $image): ?>
+                            <img class="thumbnail" src="<?= htmlspecialchars($image) ?>" alt="Thumbnail Image" onclick="changeMainImage(this)">
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Product Details -->
+                <div class="product-details">
+                    <h2><?= htmlspecialchars($product['name']) ?></h2>
+                    <p><?= htmlspecialchars($product['description']) ?></p>
+                    <p>Price: $<?= htmlspecialchars($product['normal_price']) ?></p>
+                    <button class="btn btn-primary order-button" onclick="openOrderForm(<?= $product_id ?>, '<?= htmlspecialchars($product['name']) ?>', <?= htmlspecialchars($product['normal_price']) ?>)">Order Now</button>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<!-- Modal for Image Preview -->
+<div id="previewModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4 text-center">
+            <img id="previewImage" src="" alt="Preview Image" style="max-width: 100%; max-height: 80vh; margin: 0 auto;">
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Order Form -->
+<div id="orderModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="orderForm" method="POST" action="process_order.php" class="p-3">
+                <input type="hidden" name="product_id" id="product_id">
+                <input type="hidden" name="price" id="price">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" name="name" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" class="form-control" name="phone" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" class="form-control" name="address" id="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" class="form-control" name="quantity" id="quantity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Store Location:</label>
+                    <select name="location_id" id="location" class="form-control" onchange="updateDeliveryFee()">
+                    <?php foreach ($stores as $store): ?>
+                            <option value="<?= $store['id'] ?>" data-fee="<?= $store['delivery_fee'] ?>">
+                                <?= htmlspecialchars($store['location_name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <p>Delivery Fee: $<span id="delivery-fee">0.00</span></p>
+                </div>
+                <button type="submit" class="btn btn-success btn-block" onclick="alert('Order successful!')">Submit Order</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for image preview, ordering modal, delivery fee update, and Bootstrap dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    function openPreviewModal(imageElement) {
+        document.getElementById("previewImage").src = imageElement.src;
+        $('#previewModal').modal('show');
+    }
+
+    function openOrderForm(productId, productName, price) {
+        document.getElementById("product_id").value = productId;
+        document.getElementById("price").value = price;
+        $('#orderModal').modal('show');
+    }
+
+    function updateDeliveryFee() {
+        const locationSelect = document.getElementById("location");
+        const selectedOption = locationSelect.options[locationSelect.selectedIndex];
+        const fee = selectedOption.getAttribute("data-fee");
+        document.getElementById("delivery-fee").textContent = parseFloat(fee).toFixed(2);
+    }
+
+    function changeMainImage(thumbnail) {
+        document.querySelector(".main-image").src = thumbnail.src;
+    }
+
+    document.addEventListener("DOMContentLoaded", updateDeliveryFee);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+//manageoders original
+<?php
+include('../includes/header.php');
+include('../config/database.php');
+
+// Fetch orders based on selected filter
+$status = $_GET['status'] ?? 'All';
+$query = "SELECT o.*, c.name as customer_name, s.location_name 
+          FROM orders o 
+          JOIN customers c ON o.customer_id = c.id
+          JOIN store_locations s ON o.location_id = s.id";
+if ($status !== 'All') {
+    $query .= " WHERE o.status = :status";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['status' => $status]);
+} else {
+    $stmt = $pdo->query($query);
+}
+$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<div class="container mt-5">
+    <h2>Manage Orders</h2>
+
+    <!-- Filter by Status -->
+    <form method="GET" class="mb-3">
+        <select name="status" onchange="this.form.submit()" class="form-control w-25">
+            <option value="All" <?= $status === 'All' ? 'selected' : ''; ?>>All</option>
+            <option value="Pending" <?= $status === 'Pending' ? 'selected' : ''; ?>>Pending</option>
+            <option value="Processed" <?= $status === 'Processed' ? 'selected' : ''; ?>>Processed</option>
+            <option value="Delivered" <?= $status === 'Delivered' ? 'selected' : ''; ?>>Delivered</option>
+            <option value="Cancelled" <?= $status === 'Cancelled' ? 'selected' : ''; ?>>Cancelled</option>
+        </select>
+    </form>
+
+    <!-- Order List -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order Date</th>
+                <th>Transaction ID</th>
+                <th>Customer</th>
+                <th>Location</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($orders as $order): ?>
+                <tr>
+                    <td><?= htmlspecialchars($order['order_date']); ?></td>
+                    <td><?= htmlspecialchars($order['transaction_id']); ?></td>
+                    <td><?= htmlspecialchars($order['customer_name']); ?></td>
+                    <td><?= htmlspecialchars($order['location_name']); ?></td>
+                    <td><?= htmlspecialchars($order['total_amount']); ?></td>
+                    <td><?= htmlspecialchars($order['status']); ?></td>
+                    <td>
+                        <a href="view_order.php?id=<?= $order['id']; ?>" class="btn btn-sm btn-info">View</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<!-- <?php include('../includes/footer.php'); ?> -->

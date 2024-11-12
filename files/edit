@@ -1,0 +1,550 @@
+<section id="menu-6" class="wide-70 menu-section division">
+				<div class="container">
+
+
+					<!-- SECTION TITLE -->	
+					<div class="row">	
+						<div class="col-lg-10 offset-lg-1">
+							<div class="section-title mb-60 text-center">	
+
+								<!-- Title 	-->	
+								<h2 class="h2-xl red-color">True Italian Flavor</h2>	
+
+								<!-- Text -->	
+								<p class="p-xl">Aliquam a augue suscipit, luctus neque purus ipsum neque undo dolor 
+								   primis libero tempus, blandit a cursus varius magna
+								</p>
+									
+							</div>	
+						</div>
+					</div>
+
+
+					<div class="row">
+
+
+						<!-- MENU ITEM #1 -->
+						<div class="col-sm-6 col-lg-3">
+							<div class="menu-6-item bg-white">
+
+								<!-- IMAGE -->
+								<div class="menu-6-img rel">
+									<div class="hover-overlay">
+
+										<!-- Image -->
+										<img class="img-fluid" src="images/menu/pizza-11.jpg" alt="menu-image">
+
+										<!-- Item Code -->
+										<span class="item-code bg-tra-dark">Code: 0850</span>	
+
+										<!-- Zoom Icon -->
+										<div class="menu-img-zoom ico-25">
+											<a href="images/menu/pizza-11.jpg" class="image-link">
+												<span class="flaticon-zoom"></span>
+											</a>
+										</div> 
+
+									</div>
+								</div>
+
+								<!-- TEXT -->
+								<div class="menu-6-txt rel">
+
+									<!-- Rating -->	
+									<div class="item-rating">
+										<div class="stars-rating stars-lg">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star-half-alt"></i>
+										</div>		
+									</div>
+
+									<!-- Like Icon -->
+									<div class="like-ico ico-25">
+										<a href="#"><span class="flaticon-heart"></span></a>
+									</div>
+
+									<!-- Title -->
+									<h5 class="h5-sm coffee-color">Cheese Pizza</h5>
+
+									<!-- Description -->	
+									<p class="grey-color">Tomato sauce, mozzarella cheese, parmesan cheese, basil</p>
+
+									<!-- Price -->
+									<div class="menu-6-price bg-coffee">
+										<h5 class="h5-xs yellow-color">$22.50</h5>
+									</div>
+
+									<!-- Add To Cart -->
+									<div class="add-to-cart bg-yellow ico-10">
+										<a href="product-single.html"><span class="flaticon-shopping-bag"></span> Add to Cart</a>
+									</div>
+
+								</div>
+
+							</div>
+						</div>	<!-- END MENU ITEM #1 -->
+
+
+						<!-- MENU ITEM #2 -->
+						<div class="col-sm-6 col-lg-3">
+							<div class="menu-6-item bg-white">
+
+								<!-- IMAGE -->
+								<div class="menu-6-img rel">
+									<div class="hover-overlay">
+
+										<!-- Image -->
+										<img class="img-fluid" src="images/menu/pizza-12.jpg" alt="menu-image">
+
+										<!-- Item Code -->
+										<span class="item-code bg-tra-dark">Code: 0858</span>	
+
+										<!-- Zoom Icon -->
+										<div class="menu-img-zoom ico-25">
+											<a href="images/menu/pizza-12.jpg" class="image-link">
+												<span class="flaticon-zoom"></span>
+											</a>
+										</div> 
+
+									</div>
+								</div>
+
+								<!-- TEXT -->
+								<div class="menu-6-txt rel">
+
+									<!-- Rating -->	
+									<div class="item-rating">
+										<div class="stars-rating stars-lg">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="far fa-star"></i>
+										</div>		
+									</div>
+
+									<!-- Like Icon -->
+									<div class="like-ico ico-25">
+										<a href="#"><span class="flaticon-heart"></span></a>
+									</div>
+
+									<!-- Title -->
+									<h5 class="h5-sm coffee-color">Pepperoni</h5>
+
+									<!-- Description -->	
+									<p class="grey-color">Sliced pepperoni, parmesan cheese, mozzarella cheese, sauce</p>
+
+									<!-- Price -->
+									<div class="menu-6-price bg-coffee">
+										<h5 class="h5-xs yellow-color">$25.00</h5>
+									</div>
+
+									<!-- Add To Cart -->
+									<div class="add-to-cart bg-yellow ico-10">
+										<a href="product-single.html"><span class="flaticon-shopping-bag"></span> Add to Cart</a>
+									</div>
+
+								</div>
+
+							</div>
+						</div>	<!-- END MENU ITEM #2 -->
+
+
+						<!-- MENU ITEM #3 -->
+						<div class="col-sm-6 col-lg-3">
+							<div class="menu-6-item bg-white">
+
+								<!-- IMAGE -->
+								<div class="menu-6-img rel">
+									<div class="hover-overlay">
+
+										<!-- Image -->
+										<img class="img-fluid" src="images/menu/pizza-13.jpg" alt="menu-image">
+
+										<!-- Item Code -->
+										<span class="item-code bg-tra-dark">Code: 0847</span>	
+
+										<!-- Zoom Icon -->
+										<div class="menu-img-zoom ico-25">
+											<a href="images/menu/pizza-13.jpg" class="image-link">
+												<span class="flaticon-zoom"></span>
+											</a>
+										</div> 
+
+									</div>
+								</div>
+
+								<!-- TEXT -->
+								<div class="menu-6-txt rel">
+
+									<!-- Rating -->	
+									<div class="item-rating">
+										<div class="stars-rating stars-lg">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+										</div>		
+									</div>
+
+									<!-- Like Icon -->
+									<div class="like-ico ico-25">
+										<a href="#"><span class="flaticon-heart"></span></a>
+									</div>
+
+									<!-- Title -->
+									<h5 class="h5-sm coffee-color">BBQ Chicken Pizza</h5>
+
+									<!-- Description -->	
+									<p class="grey-color">BBQ sauce, chicken, mozzarella, cheese, tomatoes, red onion</p>
+
+									<!-- Price -->
+									<div class="menu-6-price bg-coffee">
+										<h5 class="h5-xs yellow-color">$27.00</h5>
+									</div>
+
+									<!-- Add To Cart -->
+									<div class="add-to-cart bg-yellow ico-10">
+										<a href="product-single.html"><span class="flaticon-shopping-bag"></span> Add to Cart</a>
+									</div>
+
+								</div>
+
+							</div>
+						</div>	<!-- END MENU ITEM #3 -->
+
+
+						<!-- MENU ITEM #4 -->
+						<div class="col-sm-6 col-lg-3">
+							<div class="menu-6-item bg-white">
+
+								<!-- IMAGE -->
+								<div class="menu-6-img rel">
+									<div class="hover-overlay">
+
+										<!-- Image -->
+										<img class="img-fluid" src="images/menu/pizza-14.jpg" alt="menu-image">
+
+										<!-- Item Code -->
+										<span class="item-code bg-tra-dark">Code: 0859</span>	
+
+										<!-- Zoom Icon -->
+										<div class="menu-img-zoom ico-25">
+											<a href="images/menu/pizza-14.jpg" class="image-link">
+												<span class="flaticon-zoom"></span>
+											</a>
+										</div> 
+
+									</div>
+								</div>
+
+								<!-- TEXT -->
+								<div class="menu-6-txt rel">
+
+									<!-- Rating -->	
+									<div class="item-rating">
+										<div class="stars-rating stars-lg">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star-half-alt"></i>
+										</div>		
+									</div>
+
+									<!-- Like Icon -->
+									<div class="like-ico ico-25">
+										<a href="#"><span class="flaticon-heart"></span></a>
+									</div>
+
+									<!-- Title -->
+									<h5 class="h5-sm coffee-color">Prosciutto Pizza</h5>
+
+									<!-- Description -->	
+									<p class="grey-color">Tomato sauce, mozzarella, Prosciutto, lemon, olive oil</p>
+
+									<!-- Price -->
+									<div class="menu-6-price bg-coffee">
+										<h5 class="h5-xs yellow-color">$28.50</h5>
+									</div>
+
+									<!-- Add To Cart -->
+									<div class="add-to-cart bg-yellow ico-10">
+										<a href="product-single.html"><span class="flaticon-shopping-bag"></span> Add to Cart</a>
+									</div>
+
+								</div>
+
+							</div>
+						</div>	<!-- END MENU ITEM #4 -->
+
+
+						<!-- MENU ITEM #5 -->
+						<div class="col-sm-6 col-lg-3">
+							<div class="menu-6-item bg-white">
+
+								<!-- IMAGE -->
+								<div class="menu-6-img rel">
+									<div class="hover-overlay">
+
+										<!-- Image -->
+										<img class="img-fluid" src="images/menu/pizza-15.jpg" alt="menu-image">
+
+										<!-- Item Code -->
+										<span class="item-code bg-tra-dark">Code: 0861</span>	
+
+										<!-- Zoom Icon -->
+										<div class="menu-img-zoom ico-25">
+											<a href="images/menu/pizza-15.jpg" class="image-link">
+												<span class="flaticon-zoom"></span>
+											</a>
+										</div> 
+
+									</div>
+								</div>
+
+								<!-- TEXT -->
+								<div class="menu-6-txt rel">
+
+									<!-- Rating -->	
+									<div class="item-rating">
+										<div class="stars-rating stars-lg">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star-half-alt"></i>
+										</div>		
+									</div>
+
+									<!-- Like Icon -->
+									<div class="like-ico ico-25">
+										<a href="#"><span class="flaticon-heart"></span></a>
+									</div>
+
+									<!-- Title -->
+									<h5 class="h5-sm coffee-color">Firehouse Pizza</h5>
+
+									<!-- Description -->
+									<p class="grey-color">Spicy sausage, pepperoni, red onion, tomatoes, basil</p>
+
+									<!-- Price -->
+									<div class="menu-6-price bg-coffee">
+										<h5 class="h5-xs yellow-color">$24.80</h5>
+									</div>
+
+									<!-- Add To Cart -->
+									<div class="add-to-cart bg-yellow ico-10">
+										<a href="product-single.html"><span class="flaticon-shopping-bag"></span> Add to Cart</a>
+									</div>
+
+								</div>
+
+							</div>
+						</div>	<!-- END MENU ITEM #5 -->
+
+
+						<!-- MENU ITEM #6 -->
+						<div class="col-sm-6 col-lg-3">
+							<div class="menu-6-item bg-white">
+
+								<!-- IMAGE -->
+								<div class="menu-6-img rel">
+									<div class="hover-overlay">
+
+										<!-- Image -->
+										<img class="img-fluid" src="images/menu/pizza-16.jpg" alt="menu-image">
+
+										<!-- Item Code -->
+										<span class="item-code bg-tra-dark">Code: 0840</span>	
+
+										<!-- Zoom Icon -->
+										<div class="menu-img-zoom ico-25">
+											<a href="images/menu/pizza-16.jpg" class="image-link">
+												<span class="flaticon-zoom"></span>
+											</a>
+										</div> 
+
+									</div>
+								</div>
+
+								<!-- TEXT -->
+								<div class="menu-6-txt rel">
+
+									<!-- Rating -->	
+									<div class="item-rating">
+										<div class="stars-rating stars-lg">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="far fa-star"></i>
+										</div>		
+									</div>
+
+									<!-- Like Icon -->
+									<div class="like-ico ico-25">
+										<a href="#"><span class="flaticon-heart"></span></a>
+									</div>
+
+									<!-- Title -->
+									<h5 class="h5-sm coffee-color">Ultimate Meat Pizza</h5>
+
+									<!-- Description -->
+									<p class="grey-color">Sausage, seasoned ground beef, pepperoni, ham, salami, bacone</p>
+
+									<!-- Price -->
+									<div class="menu-6-price bg-coffee">
+										<h5 class="h5-xs yellow-color">$32.75</h5>
+									</div>
+
+									<!-- Add To Cart -->
+									<div class="add-to-cart bg-yellow ico-10">
+										<a href="product-single.html"><span class="flaticon-shopping-bag"></span> Add to Cart</a>
+									</div>
+
+								</div>
+
+							</div>
+						</div>	<!-- END MENU ITEM #6 -->
+
+
+						<!-- MENU ITEM #7 -->
+						<div class="col-sm-6 col-lg-3">
+							<div class="menu-6-item bg-white">
+
+								<!-- IMAGE -->
+								<div class="menu-6-img rel">
+									<div class="hover-overlay">
+
+										<!-- Image -->
+										<img class="img-fluid" src="images/menu/pizza-17.jpg" alt="menu-image">
+
+										<!-- Item Code -->
+										<span class="item-code bg-tra-dark">Code: 0862</span>	
+
+										<!-- Zoom Icon -->
+										<div class="menu-img-zoom ico-25">
+											<a href="images/menu/pizza-17.jpg" class="image-link">
+												<span class="flaticon-zoom"></span>
+											</a>
+										</div> 
+
+									</div>
+								</div>
+
+								<!-- TEXT -->
+								<div class="menu-6-txt rel">
+
+									<!-- Rating -->	
+									<div class="item-rating">
+										<div class="stars-rating stars-lg">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+										</div>		
+									</div>
+
+									<!-- Like Icon -->
+									<div class="like-ico ico-25">
+										<a href="#"><span class="flaticon-heart"></span></a>
+									</div>
+
+									<!-- Title -->
+									<h5 class="h5-sm coffee-color">Garden Veggie Pizza</h5>
+
+									<!-- Description -->
+									<p class="grey-color">Mushrooms, onions, green peppers, black olives, tomatoes</p>
+
+									<!-- Price -->
+									<div class="menu-6-price bg-coffee">
+										<h5 class="h5-xs yellow-color">$24.75</h5>
+									</div>
+
+									<!-- Add To Cart -->
+									<div class="add-to-cart bg-yellow ico-10">
+										<a href="product-single.html"><span class="flaticon-shopping-bag"></span> Add to Cart</a>
+									</div>
+
+								</div>
+
+							</div>
+						</div>	<!-- END MENU ITEM #7 -->
+
+
+						<!-- MENU ITEM #8 -->
+						<div class="col-sm-6 col-lg-3">
+							<div class="menu-6-item bg-white">
+
+								<!-- IMAGE -->
+								<div class="menu-6-img rel">
+									<div class="hover-overlay">
+
+										<!-- Image -->
+										<img class="img-fluid" src="images/menu/pizza-18.jpg" alt="menu-image">
+
+										<!-- Item Code -->
+										<span class="item-code bg-tra-dark">Code: 0844</span>	
+
+										<!-- Zoom Icon -->
+										<div class="menu-img-zoom ico-25">
+											<a href="images/menu/pizza-18.jpg" class="image-link">
+												<span class="flaticon-zoom"></span>
+											</a>
+										</div> 
+
+									</div>
+								</div>
+
+								<!-- TEXT -->
+								<div class="menu-6-txt rel">
+
+									<!-- Rating -->	
+									<div class="item-rating">
+										<div class="stars-rating stars-lg">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="far fa-star"></i>
+										</div>		
+									</div>
+
+									<!-- Like Icon -->
+									<div class="like-ico ico-25">
+										<a href="#"><span class="flaticon-heart"></span></a>
+									</div>
+
+									<!-- Title -->
+									<h5 class="h5-sm coffee-color">Chicken Pizza</h5>
+
+									<!-- Description -->
+									<p class="grey-color">Buffalo sauce, mozzarella, red onion, chicken, ranch sauce</p>
+
+									<!-- Price -->
+									<div class="menu-6-price bg-coffee">
+										<h5 class="h5-xs yellow-color">$26.80</h5>
+									</div>
+
+									<!-- Add To Cart -->
+									<div class="add-to-cart bg-yellow ico-10">
+										<a href="product-single.html"><span class="flaticon-shopping-bag"></span> Add to Cart</a>
+									</div>
+
+								</div>
+
+							</div>
+						</div>	<!-- END MENU ITEM #8 -->
+
+
+					</div>	  <!-- End row -->	
+				</div>	   <!-- End container -->
+			</section>	<!-- END MENU-6 -->
+
+

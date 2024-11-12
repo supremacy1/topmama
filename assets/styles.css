@@ -1,0 +1,104 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+
+h2 {
+    color: #f71b1b;
+    border-bottom: 2px solid #0b0c0c;
+    padding-bottom: 10px;
+}
+
+form {
+    background-color: #fff;
+    padding: 10px; /* Reduced padding */
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 20px; /* Centered horizontally and reduced bottom margin */
+    max-width: 350px;
+    min-height: 350px; /* Set a smaller max width to shrink the form */
+    text-align: center; /* Center-align the form content */
+}
+
+label {
+    font-weight: bold;
+    font-size: 0.85em; /* Slightly smaller font */
+    display: block;
+    text-align: left; /* Keep labels aligned to the left */
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 85%; /* Smaller width */
+    padding: 6px; /* Reduced padding */
+    margin: 4px 0 10px; /* Reduced margin */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.85em; /* Slightly smaller font size */
+    display: flex;
+}
+
+input[type="file"] {
+    margin: 8px 0;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px; /* Smaller padding */
+    font-size: 0.9em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 85%; /* Center button width with form inputs */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.product-container {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    max-width: 350px; 
+    min-height: 350px;
+    font-size: 52%;
+}
+
+.product-container img {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
+.sidebar {
+    width: 250px;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #495057;
+    border-radius: 5px;
+}

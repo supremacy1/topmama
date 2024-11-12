@@ -1,0 +1,141 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Data with PHP and JavaScript</title>
+</head>
+<body>
+    <h1>Data from Database</h1>
+    <div id="dataContainer"></div>
+
+    <script>
+       
+        fetch('fetch_data.php')
+            .then(response => response.json())
+            .then(data => {
+                const dataContainer = document.getElementById('dataContainer');
+                
+                data.forEach(item => {
+                   
+                    const div = document.createElement('div');
+                    div.textContent = `ID: ${item.id}, Name: ${item.name}`;
+                    dataContainer.appendChild(div);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Gallery</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .product-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .product {
+            position: relative;
+            width: 300px;
+            margin: 1rem;
+            cursor: pointer;
+        }
+        .product img.main-image {
+            width: 100%;
+            height: auto;
+            transition: transform 0.2s ease;
+        }
+        .product img.main-image:hover {
+            transform: scale(1.05);
+        }
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .thumbnail:hover {
+            transform: scale(1.1);
+        }
+        .enlarge-modal .modal-content {
+            background-color: transparent;
+            border: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Product Gallery</h1>
+    <div id="product-gallery" class="product-gallery"></div>
+</div>
+
+<!-- Modal for enlarged image -->
+<div class="modal fade enlarge-modal" id="enlargeModal" tabindex="-1" aria-labelledby="enlargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <img id="enlargedImage" src="" class="img-fluid" alt="Enlarged Image">
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Fetch products data
+    $.ajax({
+        url: 'fetch_products.php',
+        method: 'GET',
+        success: function(products) {
+            products.forEach(product => {
+                const productElement = $(`
+                    <div class="product" data-toggle="modal" data-target="#enlargeModal">
+                        <img src="${product.photos[0]}" class="main-image" alt="${product.name}">
+                        <h5>${product.name}</h5>
+                        <p>${product.description}</p>
+                        <p><strong>Price:</strong> $${product.normal_price}</p>
+                        <div class="thumbnail-container"></div>
+                    </div>
+                `);
+
+                // Add thumbnails
+                product.photos.forEach(photo => {
+                    const thumbnail = $(`<img src="${photo}" class="thumbnail" alt="${product.name}">`);
+                    thumbnail.on('click', function(e) {
+                        e.stopPropagation();
+                        productElement.find('.main-image').attr('src', photo);
+                    });
+                    productElement.find('.thumbnail-container').append(thumbnail);
+                });
+
+                // Set click event to show enlarged image
+                productElement.on('click', function() {
+                    $('#enlargedImage').attr('src', product.photos[0]);
+                });
+
+                $('#product-gallery').append(productElement);
+            });
+        },
+        error: function() {
+            alert('Failed to load products.');
+        }
+    });
+});
+</script>
+
+</body>
+</html>

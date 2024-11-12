@@ -1,0 +1,291 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.product-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.product-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+}
+
+.image-container {
+    position: relative;
+}
+
+.main-image {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.main-image:hover {
+    transform: scale(1.05);
+}
+
+.thumbnail-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.thumbnail {
+    width: 60px;
+    height: auto;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.thumbnail:hover {
+    opacity: 0.7;
+}
+
+.product-details {
+    padding: 15px;
+    text-align: center;
+}
+
+.product-details h2 {
+    font-size: 1.5em;
+    margin: 0.5em 0;
+}
+
+.product-details p {
+    color: #666;
+    margin: 0.5em 0;
+}
+
+.order-button {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 4px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.order-button:hover {
+    background-color: #ff4500;
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+} 
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+ .close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* form */
+ /* .modal-content {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(-20px);
+            opacity: 0;
+        } 
+        .modal.show .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .modal-dialog-centered {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .product-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .product-card {
+            width: 300px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .product-card img {
+            width: 100%;
+        }
+        .product-details {
+            padding: 15px;
+            text-align: center;
+        }
+        .order-button {
+            margin-top: 10px;
+        }  */
+
+
+
+        <?php
+// Include the database connection file
+include 'db_connection.php';
+
+// Fetch products and associated images
+$productQuery = "SELECT p.id, p.name, p.description, p.normal_price, p.discounted_price, pp.photo_url, pp.photo_data 
+                 FROM products p
+                 LEFT JOIN product_photos pp ON p.id = pp.product_id
+                 ORDER BY p.id, pp.id";
+$productResult = $conn->query($productQuery);
+
+// Fetch store locations and fees
+$storeQuery = "SELECT id, location_name, delivery_fee FROM store_locations";
+$storeResult = $conn->query($storeQuery);
+
+// Store locations in an array
+$stores = [];
+if ($storeResult->num_rows > 0) {
+    while ($storeRow = $storeResult->fetch_assoc()) {
+        $stores[] = $storeRow;
+    }
+}
+
+// Initialize variables to group images by product
+$products = [];
+
+if ($productResult->num_rows > 0) {
+    while ($row = $productResult->fetch_assoc()) {
+        $product_id = $row['id'];
+        
+        // Add the product details if not already in the array
+        if (!isset($products[$product_id])) {
+            $products[$product_id] = [
+                'name' => $row['name'],
+                'description' => $row['description'],
+                'normal_price' => $row['normal_price'],
+                'discounted_price' => $row['discounted_price'],
+                'images' => []
+            ];
+        }
+
+        // Add image URL or blob data to images array
+        if (!empty($row['photo_url'])) {
+            $products[$product_id]['images'][] = $row['photo_url'];
+        } elseif (!empty($row['photo_data'])) {
+            $base64_image = 'data:image/jpeg;base64,' . base64_encode($row['photo_data']);
+            $products[$product_id]['images'][] = $base64_image;
+        }
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+
+<div class="container mt-4">
+    <div class="product-gallery">
+        <?php foreach ($products as $product_id => $product) : ?>
+            <div class="product-card">
+                <div class="image-container">
+                    <!-- Display the first image as the main large image -->
+                    <img class="main-image" src="<?= htmlspecialchars($product['images'][0]) ?>" alt="Main Product Image" onclick="openPreviewModal(this)">
+
+                    <!-- Display smaller images below -->
+                    <div class="thumbnail-container mt-2 d-flex justify-content-center">
+                        <?php foreach ($product['images'] as $image): ?>
+                            <img class="thumbnail mr-1" src="<?= htmlspecialchars($image) ?>" alt="Thumbnail Image" style="width: 50px;">
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Product Details -->
+                <div class="product-details">
+                    <h2><?= htmlspecialchars($product['name']) ?></h2>
+                    <p><?= htmlspecialchars($product['description']) ?></p>
+                    <p>Price: $<?= htmlspecialchars($product['normal_price']) ?></p>
+                    <button class="btn btn-primary order-button" onclick="openOrderForm(<?= $product_id ?>, '<?= htmlspecialchars($product['name']) ?>', <?= htmlspecialchars($product['normal_price']) ?>)">Order Now</button>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+<!-- JavaScript for image preview, ordering modal, delivery fee update, and Bootstrap dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    function openOrderForm(productId, productName, price) {
+        document.getElementById("product_id").value = productId;
+        document.getElementById("price").value = price;
+        $('#orderModal').modal('show');
+    }
+
+    function closeOrderModal() {
+        $('#orderModal').modal('hide');
+    }
+
+    function updateDeliveryFee() {
+        const locationSelect = document.getElementById("location");
+        const selectedOption = locationSelect.options[locationSelect.selectedIndex];
+        const fee = selectedOption.getAttribute("data-fee");
+        document.getElementById("delivery-fee").textContent = parseFloat(fee).toFixed(2);
+    }
+
+    // Initialize the delivery fee on page load
+    document.addEventListener("DOMContentLoaded", updateDeliveryFee);
+</script>
+
+</body>
+</html>
