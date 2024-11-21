@@ -26,6 +26,7 @@ foreach ($statuses as $status) {
 }
 ?>
 <div class="container mt-5">
+<!--  -->
     <!-- Total Customer Count -->
     <div class="row mb-4">
         <div class="col-md-4">

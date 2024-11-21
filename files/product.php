@@ -55,7 +55,6 @@ if ($productResult->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
         .modal-content {
@@ -78,6 +77,7 @@ if ($productResult->num_rows > 0) {
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
+            
            
            
         }
@@ -114,15 +114,15 @@ if ($productResult->num_rows > 0) {
 <body>
 
 <div class="container mt-4">
-    <div class="product-gallery">
+    <div class="product-gallery  ">
         <?php foreach ($products as $product_id => $product) : ?>
-            <div class="product-card">
-                <div class="image-container">
+            <div class="product-card ">
+                <div class="image-container  " >
                     <!-- Display the first image as the main large image -->
-                    <img class="main-image" src="<?= htmlspecialchars($product['images'][0]) ?>" alt="Main Product Image" onclick="openPreviewModal(this)">
+                    <img class="main-image " src="<?= htmlspecialchars($product['images'][0]) ?>" alt="Main Product Image" onclick="openPreviewModal(this)">
 
                     <!-- Display smaller images below -->
-                    <div class="thumbnail-container mt-2 d-flex justify-content-center">
+                    <div class="thumbnail-container mt-2 d-flex justify-content-center ">
                         <?php foreach ($product['images'] as $image): ?>
                             <img class="thumbnail mr-1" src="<?= htmlspecialchars($image) ?>" alt="Thumbnail Image" style="width: 50px;" onclick="setMainImage(this, this.closest('.product-card'))">
                         <?php endforeach; ?>
@@ -140,43 +140,43 @@ if ($productResult->num_rows > 0) {
         <?php endforeach; ?>
     </div>
 </div>
-
 <!-- Modal for Order Form -->
 <div id="orderModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-4">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content p-3">
             <div class="modal-header">
                 <h5 class="modal-title">Order Form</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="orderForm" method="POST" action="process_order.php" class="p-3">
+            <form id="orderForm" class="p-3">
                 <input type="hidden" name="product_id" id="product_id">
                 <input type="hidden" name="price" id="price">
+                
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" class="form-control" name="name" id="name" required>
+                    <input type="text" class="form-control form-control-sm" name="name" id="name" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" class="form-control" name="email" id="email" required>
+                    <input type="email" class="form-control form-control-sm" name="email" id="email" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone:</label>
-                    <input type="tel" class="form-control" name="phone" id="phone" required>
+                    <input type="tel" class="form-control form-control-sm" name="phone" id="phone" required>
                 </div>
                 <div class="form-group">
                     <label for="address">Address:</label>
-                    <input type="text" class="form-control" name="address" id="address" required>
+                    <input type="text" class="form-control form-control-sm" name="address" id="address" required>
                 </div>
                 <div class="form-group">
                     <label for="quantity">Quantity:</label>
-                    <input type="number" class="form-control" name="quantity" id="quantity" min="1" required>
+                    <input type="number" class="form-control form-control-sm" name="quantity" id="quantity" min="1" required>
                 </div>
                 <div class="form-group">
                     <label for="location">Store Location:</label>
-                    <select name="location_id" id="location" class="form-control" onchange="updateDeliveryFee()">
+                    <select name="location_id" id="location" class="form-control form-control-sm" onchange="updateDeliveryFee()">
                         <?php foreach ($stores as $store): ?>
                             <option value="<?= $store['id'] ?>" data-fee="<?= $store['delivery_fee'] ?>">
                                 <?= htmlspecialchars($store['location_name']) ?>
@@ -187,8 +187,20 @@ if ($productResult->num_rows > 0) {
                 <div class="form-group">
                     <p>Delivery Fee: $<span id="delivery-fee">0.00</span></p>
                 </div>
-                <button type="submit" class="btn btn-success btn-block">Submit Orders</button>
+                <button type="submit" class="btn btn-success btn-block">Submit Order</button>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Success Message Modal -->
+<div id="successModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-body text-center">
+                <h5>Order placed successfully!</h5>
+                <button type="button" class="btn btn-primary mt-3" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
@@ -205,8 +217,7 @@ if ($productResult->num_rows > 0) {
     </div>
 </div>
 
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> -->
+
 <script src="js/jquery-3.5.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>	
 <script>
@@ -237,6 +248,49 @@ if ($productResult->num_rows > 0) {
         const mainImage = productCard.querySelector('.main-image');
         mainImage.src = thumbnail.src;
     }
+    function openOrderForm(productId, productName, price) {
+    document.getElementById("product_id").value = productId;
+    document.getElementById("price").value = price;
+    $('#orderModal').modal('show');
+}
+
+function updateDeliveryFee() {
+    const locationSelect = document.getElementById("location");
+    const selectedOption = locationSelect.options[locationSelect.selectedIndex];
+    const fee = selectedOption.getAttribute("data-fee");
+    document.getElementById("delivery-fee").textContent = parseFloat(fee).toFixed(2);
+}
+
+// Handle form submission using AJAX
+document.getElementById("orderForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Collect form data
+    const formData = new FormData(this);
+
+    // Send AJAX request
+    fetch('process_order.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data); // For debugging
+
+        // Close the order form modal
+        $('#orderModal').modal('hide');
+
+        // Show success message
+        $('#successModal').modal('show');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while placing your order. Please try again.');
+    });
+});
+
+// Initialize delivery fee on page load
+document.addEventListener("DOMContentLoaded", updateDeliveryFee);
 
     document.addEventListener("DOMContentLoaded", updateDeliveryFee);
 </script>

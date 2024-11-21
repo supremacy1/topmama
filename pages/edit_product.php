@@ -110,6 +110,7 @@ if (isset($_GET['delete_image'])) {
         .content-container {
             margin-left: 270px; /* Adjust according to sidebar width */
             padding: 20px;
+            margin-top:2%;
         }
 
         .form-container {
@@ -118,6 +119,7 @@ if (isset($_GET['delete_image'])) {
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
+           
         }
 
         .photo-container {
@@ -143,21 +145,20 @@ if (isset($_GET['delete_image'])) {
 <body>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <!-- <div class="sidebar col-md-2 ">
         <h2>Admin Dashboard</h2>
         <a href="manage_products">Manage Products</a>
         <a href="manage_orders">Manage Orders</a>
         <a href="manage_customers">Manage Customers</a>
-        <!-- <a href="reports">Reports</a>
-        <a href="settings">Settings</a> -->
-    </div>
+       
+    </div> -->
 
     <!-- Content Container -->
     <div class="content-container">
         <h2>Edit Product</h2>
-
+        <a class="nav-link" href="../pages/manage_products">Back</a>
         <!-- HTML Form for Editing Product -->
-        <div class="form-container">
+        <div class="form-container form-group row ">
             <form action="edit_product.php?id=<?= htmlspecialchars($product_id) ?>" method="POST">
                 <label for="name">Product Name:</label>
                 <input type="text" name="name" value="<?= htmlspecialchars($product['name']) ?>" required><br>

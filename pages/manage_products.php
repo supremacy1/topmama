@@ -1,5 +1,5 @@
 <?php
-include('../includes/header.php');
+// include('../includes/header.php');
 include('../config/database.php');
 
 // Fetch categories
@@ -96,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .content-container {
             margin-left: 200px; /* Adjust according to sidebar width */
             padding: 20px;
+            
         }
 
         .form-container {
@@ -104,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
+           margin-top:10%;
         }
 
         .product-container {
@@ -137,15 +139,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Admin Dashboard</title>
 </head>
 <body>
-
+<?php include 'sidebar.php'; ?>
     <!-- Sidebar -->
     <div class="sidebar">
         <h2>Admin Dashboard</h2>
+        <a href="dashboard">Dashbaord</a>
         <a href="manage_products">Manage Products</a>
         <a href="manage_orders">Manage Orders</a>
-        <a href="manage_customers">Manage Customers</a>
-        <!-- <a href="reports">Reports</a>
-        <a href="settings">Settings</a> -->
+       
     </div>
 
     <!-- Content Container -->
@@ -159,22 +160,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="form-group row">
                     <div class="col-md-4">
                         <label for="name">Product Name:</label>
-                        <input type="text" name="name" class="form-control" required>
+                        <input type="text" name="name" class="form-control form-control-sm" required>
                     </div>
                     <div class="col-md-4">
                         <label for="normal_price">Normal Price:</label>
-                        <input type="number" name="normal_price" class="form-control" required>
+                        <input type="number" name="normal_price" class="form-control form-control-sm" required>
                     </div>
                     <div class="col-md-4">
                         <label for="discounted_price">Discounted Price:</label>
-                        <input type="number" name="discounted_price" class="form-control">
+                        <input type="number" name="discounted_price" class="form-control form-control-sm">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <div class="col-md-4">
                         <label for="category_id">Category:</label>
-                        <select name="category_id" class="form-control" required>
+                        <select name="category_id" class="form-control form-control-sm" required>
                             <option value="">Select Category</option>
                             <?php foreach ($categories as $category): ?>
                                 <option value="<?= htmlspecialchars($category['id']) ?>"><?= htmlspecialchars($category['category_name']) ?></option>
@@ -183,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="col-md-4">
                         <label for="location_id">Location:</label>
-                        <select name="location_id" class="form-control" required>
+                        <select name="location_id" class="form-control form-control-sm" required>
                             <option value="">Select Location</option>
                             <?php foreach ($locations as $location): ?>
                                 <option value="<?= htmlspecialchars($location['id']) ?>"><?= htmlspecialchars($location['location_name']) ?></option>
@@ -192,13 +193,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="col-md-4">
                         <label for="photos">Upload Product Photos (Up to 5):</label>
-                        <input type="file" name="photos[]" class="form-control-file" multiple>
+                        <input type="file" name="photos[]" class="form-control-file form-control-sm" multiple>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description:</label>
-                    <textarea name="description" class="form-control" required></textarea>
+                    <textarea name="description" class="form-control form-control-sm" required></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Add Product</button>
@@ -228,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($product['discounted_price']) {
                     echo "<p><strong>Discounted Price:</strong> $" . htmlspecialchars($product['discounted_price']) . "</p>";
                 }
-                echo "<a href='edit_product.php?id=" . htmlspecialchars($product['id']) . "' class='btn btn-secondary'>Edit Product</a>";
+                echo "<a href='edit_product?id=" . htmlspecialchars($product['id']) . "' class='btn btn-secondary'>Edit Product</a>";
                 echo "</div>";
 
                 // Display product photos in a row

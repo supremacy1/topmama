@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         case 'delete_order':
             $stmt = $pdo->prepare("DELETE FROM orders WHERE id = :id");
             $stmt->execute(['id' => $order_id]);
-            header("Location: admin_manage_orders.php");
+            header("Location: manage_orders");
             exit;
         default:
             $new_status = null;
@@ -99,13 +99,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             color: #ffc107;
         }
         .order-container {
+            width: 40%;
+            max-height:5%;
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
             margin-top: 15px;
             font-size: 0.9rem;
-            margin-left: 220px; /* Adjust for sidebar width */
+            margin-right: 500px;
         }
         body {
             background-color: #e9ecef;
@@ -124,35 +126,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-    <h3>Admin Panel</h3>
-    <ul class="nav flex-column">
-        <li class="nav-item">
-            <a class="nav-link" href="../pages/manage_orders.php">Manage Orders</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="../pages/manage_products.php">Manage Products</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="../pages/manage_customers.php">Manage Customers</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="../pages/manage_categories.php">Manage Categories</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="../pages/manage_locations.php">Manage Locations</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="../pages/reports.php">Reports</a>
-        </li>
-    </ul>
-</div>
 
 <!-- Main Content -->
 <div class="container mt-4 order-container">
     <li class="nav-item back-button" style="list-style: none">
-        <a class="nav-link" href="../pages/manage_orders.php">Back</a>
+        <a class="nav-link" href="../pages/manage_orders">Back</a>
     </li>
     <h2>Order Details</h2>
     <p><strong>Order Date:</strong> <?= htmlspecialchars($order['order_date']); ?></p>

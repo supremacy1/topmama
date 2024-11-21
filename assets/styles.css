@@ -79,7 +79,7 @@ button:hover {
 }
 
 .product-container {
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 5px;
@@ -101,4 +101,34 @@ button:hover {
 .sidebar .nav-link:hover {
     background-color: #495057;
     border-radius: 5px;
+}
+/* Sidebar styles */
+.sidebar {
+    width: 200px;
+}
+
+.sidebar .nav-link {
+    font-size: 16px;
+}
+
+.sidebar .nav-link.active {
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+/* Main content styles */
+.main-content {
+    margin-left: 200px;
+}
+
+/* Responsive styles for sidebar */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+    }
+    .main-content {
+        margin-left: 0;
+    }
 }

@@ -57,7 +57,7 @@ $orders = $orderStmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .main-content {
-            margin-left: 270px;
+            margin-left: 200px;
             padding: 20px;
         }
     </style>
@@ -65,20 +65,13 @@ $orders = $orderStmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <!-- Sidebar Section -->
-    <div class="sidebar">
-        <h3>Admin Dashboard</h3>
-        <a href="dashboard.php">Dashboard</a>
-        <a href="manage_products.php">Manage Products</a>
-        <a href="manage_orders.php">Manage Orders</a>
-        <a href="manage_customers.php">Manage Customers</a>
-        <a href="settings.php">Settings</a>
-        <a href="logout.php">Logout</a>
-    </div>
+    
 
     <!-- Main Content Section -->
     <div class="main-content">
         <div class="container">
             <h2>Customer Details</h2>
+            <a class="nav-link" href="../pages/dashboard">Back</a>
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title"><?= htmlspecialchars($customer['name']); ?></h5>

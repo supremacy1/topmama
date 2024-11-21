@@ -1,5 +1,6 @@
 <?php
-include('../includes/header.php');
+// include('../includes/header.php');
+
 include('../config/database.php');
 
 // Fetch orders based on selected filter
@@ -41,42 +42,18 @@ foreach ($statuses as $status) {
             height: 100vh; /* Full height */
             width: 150px;
             position: fixed; /* Fixed position */
-            top: 0;
+            top: 7%;
             left: 0;
             overflow-y: auto;
         }
         .content {
-            margin-left: 250px; /* Adjust based on sidebar width */
+            margin-left: 150px;
+            margin-top:10% /* Adjust based on sidebar width */
         }
     </style>
 </head>
 <body>
-<div class="d-flex">
-    <!-- Sidebar -->
-    <div class="sidebar bg-dark text-white p-1">
-        <h3>Admin Dashboard</h3>
-        <ul class="nav flex-column mt-4">
-            <li class="nav-item">
-                <a href="../pages/dashboard" class="nav-link text-white">Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a href="manage_orders" class="nav-link text-white">Manage Orders</a>
-            </li>
-            <li class="nav-item">
-                <a href="manage_products" class="nav-link text-white">Manage Products</a>
-            </li>
-            <!-- <li class="nav-item">
-                <a href="manage_customers" class="nav-link text-white">Manage Customers</a>
-            </li>
-            <li class="nav-item">
-                <a href="reports" class="nav-link text-white">Reports</a>
-            </li>
-            <li class="nav-item">
-                <a href="settings" class="nav-link text-white">Settings</a>
-            </li> -->
-        </ul>
-    </div>
-
+<?php include 'sidebar.php'; ?>
     <!-- Main Content -->
     <div class="content p-4 flex-grow-1">
         <h2 class="mb-4">Order Management</h2>

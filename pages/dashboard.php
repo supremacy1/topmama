@@ -1,4 +1,5 @@
 <?php include('../includes/header.php'); ?>
+<link href="css/bootstrap.min.css" rel="stylesheet">
 
 <div class="container-fluid">
     <div class="row">
@@ -18,10 +19,10 @@
 
         <!-- Main Content -->
         <main role="main" class="col-md-10 ml-sm-auto px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="d-flex justify-content-between height-100vh flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h2>Dashboard</h2>
             </div>
-            <!-- <?php include('../pages/manage_customers.php'); ?> -->
+             <?php include('../pages/manage_customers.php'); ?> 
             <!-- Dashboard Cards -->
             <!-- <div class="row mb-3">
                 <div class="col-md-3">
